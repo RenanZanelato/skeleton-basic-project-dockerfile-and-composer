@@ -1,0 +1,28 @@
+{
+    "config": {
+        "http": true
+    },
+    "require": {
+        "aws/aws-sdk-php": "^3.52",
+        "doctrine/common": "^2.8",
+        "doctrine/dbal": "^2.6",
+        "doctrine/orm": "^2.6",
+        "facebook/graph-sdk": "^5.6",
+        "phpmailer/phpmailer": "^6.0",
+        "laravel/lumen-installer": "^1.0",
+        "filp/whoops": "^2.1",
+        "monolog/monolog": "^1.23",
+        "jms/serializer": "^1.11",
+        "firebase/php-jwt": "^5.0",
+        "doctrine/couchdb": "dev-master",
+        "doctrine/couchdb-odm": "v1.0.0-alpha3",
+        "guzzlehttp/guzzle": "^6.3",
+        "slim/slim": "^3.0",
+        "twig/twig": "^2.5",
+        "slim/twig-view": "^2.4",
+        "predis/predis": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {"App\\": "App/"}
+    }
+}
