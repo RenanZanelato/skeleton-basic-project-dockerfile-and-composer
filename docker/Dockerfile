@@ -1,7 +1,5 @@
 FROM php:7.2-apache
 
-EXPOSE 9000
-
 RUN apt-get update
 
 RUN apt-get install -y libpq-dev && \
