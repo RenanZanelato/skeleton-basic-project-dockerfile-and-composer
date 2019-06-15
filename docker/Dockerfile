@@ -1,4 +1,6 @@
-FROM php:7.2-apache
+FROM php:7.3-apache
+
+EXPOSE 9000
 
 RUN apt-get update
 
@@ -7,7 +9,8 @@ RUN apt-get install -y libpq-dev && \
     apt-get install -y zip unzip && \
     docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql && \
     docker-php-ext-install pdo pdo_pgsql pgsql && \
-    docker-php-ext-install gd
+    docker-php-ext-install gd && \
+    docker-php-ext-install bcmath
 
 RUN apt-get install -y libxml2-dev && \
     docker-php-ext-install soap

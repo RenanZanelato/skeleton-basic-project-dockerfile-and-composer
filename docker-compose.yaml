@@ -3,9 +3,75 @@ services:
     php:
         build:
           context: .
-          dockerfile: ./docker/Dockerfile
-        container_name: aplicacoes_teste
+          dockerfile: ./.docker/Dockerfile
+        container_name: nomedocontainer
         ports:
-          - 81:80
+          - 8081:80
         volumes:
           - ./:/var/www/html
+        links: 
+            - rabbit:rabbit
+            - redis:redis
+            - postgresql:postgresql
+    rabbit:
+      image: rabbitmq:3-management
+      hostname: my-rabbit
+      container_name: rabbit
+      environment:
+        RABBITMQ_ERLANG_COOKIE: secret cookie here
+        RABBITMQ_DEFAULT_USER: guest
+        RABBITMQ_DEFAULT_PASS: guest
+      expose:
+        - "4369"
+        - "5671"
+        - "5672"
+        - "25672"
+      ports:
+        - "5671:5671"
+        - "5672:5672"
+        - "15672:15672"
+    redis:
+        image: redis
+        privileged: true
+        container_name: redis
+        volumes:
+            - ./data/redis:/data
+        ports:
+            - "6379:6379"
+        entrypoint: redis-server
+    postgresql:
+        image: postgres
+        container_name: postgres
+        environment:
+          POSTGRES_USER: "pgadmin"
+          POSTGRES_PASSWORD: "pgadmin"
+          POSTGRES_DB: "postgresql"
+        ports:
+          - "15432:5432"
+        volumes:
+          - postgresql-volume:/var/lib/postgresql/data 
+          - postgresql-conf:/etc/postgresql/
+        networks:
+          - postgresql-network
+    pgadmin:
+        image: dpage/pgadmin4
+        container_name: pgadmin
+        environment:
+          PGADMIN_DEFAULT_EMAIL: "pgadmin"
+          PGADMIN_DEFAULT_PASSWORD: "pgadmin"
+        ports:
+          - "16543:80"
+        volumes:
+          - ./data/pgadmin/:/var/www/html
+        depends_on:
+          - postgresql
+        networks:
+          - postgresql-network
+networks: 
+    postgresql-network:
+        driver: bridge
+volumes:
+    postgresql-volume:
+      external: true
+    postgresql-conf:
+      external: true
